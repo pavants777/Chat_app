@@ -3,6 +3,7 @@ import 'package:chatx/Models/MessageModel.dart';
 import 'package:chatx/Models/UserModels.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 
 class FirebaseFunction {
   FirebaseAuth _auth = FirebaseAuth.instance;
@@ -120,8 +121,6 @@ class FirebaseFunction {
               .collection('groups')
               .doc(groupId)
               .update({'users': currentMembers});
-
-          print('Member added to the group successfully!');
         } else {
           print('Member is already in the group.');
         }
@@ -131,5 +130,40 @@ class FirebaseFunction {
     } catch (e) {
       print('Error adding member to group: $e');
     }
+  }
+
+  Future<List<dynamic>> getUserId(String groupId) async {
+    DocumentSnapshot<Map<String, dynamic>> groupDoc = await FirebaseFirestore
+        .instance
+        .collection('groups')
+        .doc(groupId)
+        .get();
+    List<dynamic> currentId = groupDoc.data()?['users'] ?? [];
+    return currentId;
+  }
+
+  Future<void> sendMessagetoGroup(String groupId, message) async {
+    String senderId = await _auth.currentUser!.uid;
+
+    final Timestamp timestamp = Timestamp.now();
+
+    Message newMessage =
+        Message(message: message, senderId: senderId, timestamp: timestamp);
+
+    await _firestore
+        .collection('groups')
+        .doc(groupId)
+        .collection('messages')
+        .add(newMessage.toJson());
+  }
+
+  Stream<QuerySnapshot<Map<String, dynamic>>> getMessageFromGroup(
+      String groupId) {
+    return _firestore
+        .collection('groups')
+        .doc(groupId)
+        .collection('messages')
+        .orderBy('timestamp', descending: false)
+        .snapshots();
   }
 }
