@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 
 class MessageModel {
   String senderId;
@@ -22,5 +23,24 @@ class MessageModel {
       'Message': Message,
       'timestamp': timestamp,
     };
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'senderId': senderId,
+      'senderEmail': senderEmail,
+      'receiverId': receiverId,
+      'Message': Message,
+      'timestamp': timestamp,
+    };
+  }
+
+  factory MessageModel.fromJson(Map<String, dynamic> json) {
+    return MessageModel(
+        senderId: json['senderId'],
+        senderEmail: json['senderEmail'],
+        receiverId: json['reciverId'],
+        Message: json['Message'],
+        timestamp: json['timestamp']);
   }
 }

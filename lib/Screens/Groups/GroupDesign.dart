@@ -1,19 +1,19 @@
-import 'package:chatx/Models/UserModels.dart';
-import 'package:chatx/Screens/ChatPage.dart';
+import 'package:chatx/Models/GroupsModel.dart';
+import 'package:chatx/Screens/Groups/GroupScreen.dart';
 import 'package:flutter/material.dart';
 
-class UserChat extends StatefulWidget {
-  final UserModles? user;
-  UserChat(this.user);
+class GroupDesign extends StatefulWidget {
+  Group? group;
+  GroupDesign({super.key, required this.group});
 
   @override
-  State<UserChat> createState() => _UserChatState();
+  State<GroupDesign> createState() => _GroupDesignState();
 }
 
-class _UserChatState extends State<UserChat> {
+class _GroupDesignState extends State<GroupDesign> {
   @override
   Widget build(BuildContext context) {
-    final srceenWidth = MediaQuery.of(context).size.width;
+    var screenWidth = MediaQuery.of(context).size.width;
     return Padding(
       padding: EdgeInsets.only(left: 5, bottom: 5),
       child: Column(
@@ -23,7 +23,7 @@ class _UserChatState extends State<UserChat> {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => ChatPage(user: widget.user)));
+                      builder: (context) => GroupScreen(group: widget.group)));
             },
             child: Container(
               padding: EdgeInsets.all(10),
@@ -32,25 +32,19 @@ class _UserChatState extends State<UserChat> {
                   alignment: Alignment.bottomCenter,
                   children: [
                     CircleAvatar(
-                      maxRadius: srceenWidth * 0.08,
+                      maxRadius: screenWidth * 0.08,
+                      backgroundColor: Colors.pink,
                     ),
-                    const Padding(
-                      padding: EdgeInsets.only(bottom: 0, left: 45),
-                      child: CircleAvatar(
-                        backgroundColor: Colors.green,
-                        radius: 8,
-                      ),
-                    )
                   ],
                 ),
                 SizedBox(
-                  width: srceenWidth * 0.05,
+                  width: screenWidth * 0.05,
                 ),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('${widget.user!.name}',
+                      Text('${widget.group!.groupName}',
                           style: TextStyle(
                               fontSize: 20,
                               color: const Color.fromARGB(255, 255, 255, 255))),
@@ -58,10 +52,12 @@ class _UserChatState extends State<UserChat> {
                         height: 8,
                       ),
                       Text(
-                        '${widget.user!.email}',
-                        softWrap: false,
+                        'Total Members :    ${widget.group!.users!.length}',
                         style: TextStyle(
-                            fontSize: 14, color: Colors.grey.shade500),
+                            fontWeight: FontWeight.normal,
+                            fontSize: 15,
+                            color: Colors.green.shade500),
+                        softWrap: false,
                       ),
                     ],
                   ),

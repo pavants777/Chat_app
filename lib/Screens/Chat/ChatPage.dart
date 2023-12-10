@@ -161,6 +161,19 @@ class _ChatPageState extends State<ChatPage> {
 
   Widget _buildMessageItem(DocumentSnapshot document) {
     Map<String, dynamic> data = document.data() as Map<String, dynamic>;
+    Timestamp timestamp = data['timestamp'];
+    DateTime dateTime = timestamp.toDate();
+    int hours = dateTime.hour;
+    int minute = dateTime.minute;
+    bool isMorning = true;
+
+    if (hours > 12) {
+      hours = hours % 12;
+      isMorning = false;
+    }
+    String period = isMorning ? 'AM' : 'PM';
+    String formattedString = '$hours : $minute $period';
+
     Color _color = (data['senderId'] == _auth.currentUser!.uid)
         ? const Color.fromARGB(255, 172, 247, 175)
         : Colors.white;
@@ -182,16 +195,30 @@ class _ChatPageState extends State<ChatPage> {
               : MainAxisAlignment.start,
           children: [
             Container(
-              padding: EdgeInsets.all(12),
+              padding: EdgeInsets.only(top: 12, left: 12, right: 12),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(8),
                 color: _color,
               ),
-              child: Text(
-                data['Message'],
-                style: TextStyle(fontSize: 16, color: Colors.black),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    data['Message'],
+                    style: TextStyle(
+                        fontSize: 20,
+                        color: Colors.black,
+                        fontWeight: FontWeight.w500),
+                  ),
+                  SizedBox(height: 4),
+                  Text(
+                    formattedString,
+                    textAlign: TextAlign.justify,
+                    style: TextStyle(fontSize: 15, color: Colors.black),
+                  ),
+                ],
               ),
-            )
+            ),
           ],
         ),
       ),

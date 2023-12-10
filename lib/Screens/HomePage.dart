@@ -1,5 +1,6 @@
-import 'package:chatx/Screens/AccountScreen.dart';
-import 'package:chatx/Screens/UsersScreen.dart';
+import 'package:chatx/Screens/Account/AccountScreen.dart';
+import 'package:chatx/Screens/Groups/GroupHomeScreen.dart';
+import 'package:chatx/Screens/Chat/UsersScreen.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
@@ -40,7 +41,9 @@ class _HomePageState extends State<HomePage> {
               });
               break;
             case 1:
-              setState(() {});
+              setState(() {
+                page = GroupHomeScreen();
+              });
               break;
             case 2:
               setState(() {

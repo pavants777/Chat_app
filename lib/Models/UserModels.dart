@@ -12,4 +12,12 @@ class UserModles {
       uid: json['uid'],
     );
   }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'name': name,
+      'email': email,
+      'uid': uid,
+    };
+  }
 }
